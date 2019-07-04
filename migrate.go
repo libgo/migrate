@@ -20,7 +20,7 @@ var (
 
 func init() {
 	// Register dsn format -> [username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]
-	flag.StringVar(&d, "d", "root:ddg1208@tcp(192.168.10.191:3306)/dolphin", "database uri")
+	flag.StringVar(&d, "d", "root:PassWord@tcp(192.168.0.1:3306)/dolphin", "database uri")
 	// Path to migrate files
 	flag.StringVar(&p, "p", "./migrate", "migration source file path")
 	// Module to up, default is "all"
