@@ -15,8 +15,8 @@ var (
 type Driver interface {
 	Open(uri string) (Driver, error)
 	Close() error
-	Lock() error
-	Unlock() error
+	Lock(source.Module) error
+	Unlock(source.Module) error
 	Exec(string) error
 	Version(source.Module) (int, bool, error)
 	SetVer(source.Module, int, bool) error

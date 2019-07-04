@@ -57,12 +57,12 @@ func (m *Mysql) Close() error {
 	return nil
 }
 
-func (m *Mysql) Lock() error {
+func (m *Mysql) Lock(md source.Module) error {
 	if m.locked {
 		return database.ErrLocked
 	}
 
-	query := `SELECT GET_LOCK("migration_lock", 10)`
+	query := fmt.Sprintf(`SELECT GET_LOCK("migration_lock_%s", 10)`, string(md))
 	var success bool
 	if err := m.db.QueryRow(query).Scan(&success); err != nil {
 		return fmt.Errorf("lock failed: %s", err.Error())
@@ -76,12 +76,12 @@ func (m *Mysql) Lock() error {
 	return nil
 }
 
-func (m *Mysql) Unlock() error {
+func (m *Mysql) Unlock(md source.Module) error {
 	if !m.locked {
 		return nil
 	}
 
-	query := `SELECT RELEASE_LOCK("migration_lock")`
+	query := fmt.Sprintf(`SELECT RELEASE_LOCK("migration_lock_%s")`, string(md))
 	if _, err := m.db.Exec(query); err != nil {
 		return fmt.Errorf("unlock failed: %s", err.Error())
 	}

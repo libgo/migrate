@@ -23,10 +23,10 @@ func New(s source.Reader, d database.Driver) *Migrate {
 
 func (m *Migrate) Up(md source.Module) error {
 	logx.Infof("Migrating module: %s", string(md))
-	if err := m.database.Lock(); err != nil {
+	if err := m.database.Lock(md); err != nil {
 		return err
 	}
-	defer m.database.Unlock()
+	defer m.database.Unlock(md)
 
 	v, d, err := m.database.Version(md)
 	if err != nil {

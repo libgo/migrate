@@ -20,6 +20,10 @@ type File struct {
 	migrations source.Migrations
 }
 
+var (
+	re = regexp.MustCompile(`^([0-9]+)_([0-9a-zA-Z\.]*)_?(.*)?\.sql$`)
+)
+
 func (f *File) Open(uri string) (source.Reader, error) {
 	migrations := make(source.Migrations)
 
@@ -59,7 +63,6 @@ func (f *File) Open(uri string) (source.Reader, error) {
 func read(file string) (source.Module, int, string, error) {
 	logx.Debugf("reading file: '%s'", file)
 	_, f := filepath.Split(file)
-	re := regexp.MustCompile(`^([0-9]+)_(.*)_(.*)\.sql$`)
 
 	m := re.FindStringSubmatch(f)
 	if len(m) == 0 {
@@ -75,6 +78,7 @@ func read(file string) (source.Module, int, string, error) {
 	if err != nil {
 		return "", 0, "", err
 	}
+	defer fi.Close()
 
 	sql, err := ioutil.ReadAll(fi)
 	if err != nil {
