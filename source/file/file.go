@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strconv"
 
+	"github.com/libgo/logx"
 	"github.com/libgo/migrate/source"
 )
 
@@ -32,7 +33,7 @@ func (f *File) Open(uri string) (source.Reader, error) {
 		}
 		module, ver, sql, err := read(path)
 		if err != nil {
-			return err
+			return nil
 		}
 
 		if _, ok := migrations[module]; !ok {
@@ -56,6 +57,7 @@ func (f *File) Open(uri string) (source.Reader, error) {
 }
 
 func read(file string) (source.Module, int, string, error) {
+	logx.Debugf("reading file: '%s'", file)
 	_, f := filepath.Split(file)
 	re := regexp.MustCompile(`^([0-9]+)_(.*)_(.*)\.sql$`)
 

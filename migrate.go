@@ -12,9 +12,10 @@ import (
 )
 
 var (
-	d string
-	p string
-	m string
+	d  string
+	p  string
+	m  string
+	dg bool
 )
 
 func init() {
@@ -24,11 +25,17 @@ func init() {
 	flag.StringVar(&p, "p", "./migrate", "migration source file path")
 	// Module to up, default is "all"
 	flag.StringVar(&m, "m", "all", "module to up")
+	// Debug flag
+	flag.BoolVar(&dg, "D", false, "dubug")
 }
 
 func main() {
 	flag.Parse()
+
 	logx.SetGlobalLevel(logx.InfoLevel)
+	if dg {
+		logx.SetGlobalLevel(logx.DebugLevel)
+	}
 
 	db, err := database.Open("mysql", d)
 	if err != nil {

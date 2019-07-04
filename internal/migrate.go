@@ -48,7 +48,7 @@ func (m *Migrate) Up(md source.Module) error {
 			break
 		}
 
-		logx.Infof("Migrating %s[%d]", string(md), nv)
+		logx.Debugf("Migrating %s[%d]", string(md), nv)
 		err = m.database.Exec(sql)
 
 		if err != nil && err == database.ErrFailed {
