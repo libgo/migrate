@@ -51,13 +51,9 @@ func (m *Migrate) Up(md source.Module) error {
 		logx.Debugf("Migrating %s[%d]", string(md), nv)
 		err = m.database.Exec(sql)
 
-		if err != nil && err == database.ErrFailed {
+		if err != nil {
 			m.database.SetVer(md, nv, true)
-			return fmt.Errorf("module %s:%d is dirty, should clean it by yourself", string(md), nv)
-		}
-
-		if err != nil && err != database.ErrFailed {
-			return err
+			return fmt.Errorf("module %s:%d exec failed, should clean it by yourself, err is %s", string(md), nv, err.Error())
 		}
 
 		m.database.SetVer(md, nv, false)

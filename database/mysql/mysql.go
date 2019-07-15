@@ -106,7 +106,7 @@ func (m *Mysql) Exec(sql string) error {
 
 		_, err = tx.Exec(s + ";")
 		if err != nil {
-			return database.ErrFailed
+			return err
 		}
 	}
 	return tx.Commit()
