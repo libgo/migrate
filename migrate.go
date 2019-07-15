@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"os"
 
 	"github.com/libgo/logx"
 	"github.com/libgo/migrate/database"
@@ -40,13 +41,13 @@ func main() {
 	db, err := database.Open("mysql", d)
 	if err != nil {
 		logx.Errorf("Open database error: %s", err.Error())
-		return
+		os.Exit(1)
 	}
 
 	r, err := source.Open("file", p)
 	if err != nil {
 		logx.Errorf("Read source migration error: %s", err.Error())
-		return
+		os.Exit(1)
 	}
 
 	mig := internal.New(r, db)
@@ -58,5 +59,6 @@ func main() {
 
 	if err != nil {
 		logx.Errorf("Migrating error: %s", err.Error())
+		os.Exit(1)
 	}
 }
