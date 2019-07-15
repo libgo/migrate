@@ -3,7 +3,6 @@ package mysql
 import (
 	"database/sql"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -97,17 +96,9 @@ func (m *Mysql) Exec(sql string) error {
 	}
 	defer tx.Rollback()
 
-	sqls := strings.Split(sql, ";")
-	for _, s := range sqls {
-		s := strings.TrimSpace(s)
-		if s == "" {
-			continue
-		}
-
-		_, err = tx.Exec(s + ";")
-		if err != nil {
-			return err
-		}
+	_, err = tx.Exec(sql)
+	if err != nil {
+		return err
 	}
 	return tx.Commit()
 }
