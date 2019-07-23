@@ -39,7 +39,8 @@ func (m *Migrate) Up(md source.Module) error {
 
 	err = m.source.Goto(md, v)
 	if err != nil {
-		return fmt.Errorf("database version is beyond migration range, something panic")
+		logx.Infof("current module %s:%d is beyond migration source range, cannot UP", string(md), v)
+		return nil
 	}
 
 	for {
