@@ -22,7 +22,7 @@ func New(s source.Reader, d database.Driver) *Migrate {
 }
 
 func (m *Migrate) Up(md source.Module) error {
-	logx.Infof("Migrating module: %s", string(md))
+	logx.Infof("migrate: migrating module: %s", string(md))
 	if err := m.database.Lock(md); err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (m *Migrate) Up(md source.Module) error {
 
 	err = m.source.Goto(md, v)
 	if err != nil {
-		logx.Infof("current module %s:%d is beyond migration source range, cannot UP", string(md), v)
+		logx.Infof("migrate: current module %s:%d is beyond migration source range, cannot UP", string(md), v)
 		return nil
 	}
 
@@ -55,7 +55,7 @@ func (m *Migrate) Up(md source.Module) error {
 			return fmt.Errorf("module %s[version:%d] exec failed, should clean it by yourself, err is %s", string(md), nv, err.Error())
 		}
 
-		logx.Infof("Migrated %s to version %d successfully.", string(md), nv)
+		logx.Infof("migrate: migrated %s to version %d successfully.", string(md), nv)
 		m.database.SetVer(md, nv, false)
 	}
 

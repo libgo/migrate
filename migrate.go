@@ -40,13 +40,13 @@ func main() {
 
 	db, err := database.Open("mysql", d)
 	if err != nil {
-		logx.Errorf("Open database error: %s", err.Error())
+		logx.Errorf("migrate: open database error: %s", err.Error())
 		os.Exit(1)
 	}
 
 	r, err := source.Open("file", p)
 	if err != nil {
-		logx.Errorf("Read source migration error: %s", err.Error())
+		logx.Errorf("migrate: read source migration error: %s", err.Error())
 		os.Exit(1)
 	}
 
@@ -58,7 +58,7 @@ func main() {
 	}
 
 	if err != nil {
-		logx.Errorf("Migrating error: %s", err.Error())
+		logx.Errorf("migrate: migrating error: %s", err.Error())
 		os.Exit(1)
 	}
 }

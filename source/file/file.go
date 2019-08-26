@@ -61,7 +61,7 @@ func (f *File) Open(uri string) (source.Reader, error) {
 }
 
 func read(file string) (source.Module, int, string, error) {
-	logx.Debugf("reading file: '%s'", file)
+	logx.Debugf("migrate: reading file: '%s'", file)
 	_, f := filepath.Split(file)
 
 	m := re.FindStringSubmatch(f)
