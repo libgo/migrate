@@ -49,14 +49,13 @@ func (m *Migrate) Up(md source.Module) error {
 			break
 		}
 
-		logx.Debugf("Migrating %s[%d]", string(md), nv)
 		err = m.database.Exec(sql)
-
 		if err != nil {
 			m.database.SetVer(md, nv, true)
-			return fmt.Errorf("module %s:%d exec failed, should clean it by yourself, err is %s", string(md), nv, err.Error())
+			return fmt.Errorf("module %s[version:%d] exec failed, should clean it by yourself, err is %s", string(md), nv, err.Error())
 		}
 
+		logx.Infof("Migrated %s to version %d successfully.", string(md), nv)
 		m.database.SetVer(md, nv, false)
 	}
 
